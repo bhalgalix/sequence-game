@@ -9,16 +9,32 @@
         },
         {
           "name": "AMAZON.HelpIntent",
-          "samples": []
+          "samples": [
+            "help me"
+          ]
         },
         {
           "name": "AMAZON.StopIntent",
           "samples": []
         },
         {
-          "name": "HelloWorldIntent",
+          "name": "BeginGameIntent",
           "samples": [
-            "hello"
+            "begin game"
+          ]
+        },
+        {
+          "name":"AnswerIntent",
+          "slots":[
+              {
+                  "name":"number",
+                  "type":"AMAZON.NUMBER"
+              }
+          ],
+          "samples":[
+              "{number}",
+              "{number} is my answer",
+              "my answer is {number}"
           ]
         }
       ]

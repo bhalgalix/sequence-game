@@ -6,10 +6,10 @@
           "summary": "Sample Short Description",
           "examplePhrases": [
             "Alexa open hello world",
-            "hello",
+            "begin game",
             "help"
           ],
-          "name": "Hello World",
+          "name": "sequence-game",
           "description": "Sample Full Description"
         }
       },
@@ -22,7 +22,7 @@
       "custom": {
         "endpoint": {
           "sourceDir": "lambda/custom",
-          "uri": "ask-custom-helloworld-default"
+          "uri": "ask-custom-sequence-game-default"
         }
       }
     },

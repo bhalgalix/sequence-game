@@ -2,36 +2,65 @@
 /* eslint-disable  no-console */
 
 const Alexa = require('ask-sdk-core');
+var answerArray = [`9`,`13`,`243`, `28`, `36`];
+var correctAns = 0;
+var preMadeSequences = [`one, three, five, seven.`, `one, two, three, five, eight`, `1, 3, 9, 27, 81`, `1, 3, 6, 10, 15, 21`, `0, 1, 4, 9, 16, 25` ];
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'LaunchRequest';
   },
   handle(handlerInput) {
-    const speechText = 'Welcome to the Alexa Skills Kit, you can say hello!';
+    const speechText = 'Welcome to the sequence game. Say begin game to start.';
+    const repromptText = 'What would you like to do? You can say HELP to get available options';
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .reprompt(speechText)
-      .withSimpleCard('Hello World', speechText)
+      .reprompt(repromptText)
       .getResponse();
   },
 };
 
-const HelloWorldIntentHandler = {
+const BeginGameIntentHandler = {
   canHandle(handlerInput) {
     return handlerInput.requestEnvelope.request.type === 'IntentRequest'
-      && handlerInput.requestEnvelope.request.intent.name === 'HelloWorldIntent';
+      && handlerInput.requestEnvelope.request.intent.name === 'BeginGameIntent';
   },
   handle(handlerInput) {
-    const speechText = 'Hello World!';
+    var randomNum = Math.floor(Math.random()*preMadeSequences.length);
+    var speechText = `${preMadeSequences[randomNum]}`;
+    correctAns = answerArray[randomNum];
+    speechText += ` Guess the next number`;
+    const repromptText = 'give me a number';
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .withSimpleCard('Hello World', speechText)
+      .reprompt(repromptText)
       .getResponse();
   },
 };
+
+const AnswerIntentHandler = {
+  canHandle(handlerInput) {
+    return handlerInput.requestEnvelope.request.type === 'IntentRequest'
+      && handlerInput.requestEnvelope.request.intent.name === 'AnswerIntent';
+  },
+  handle(handlerInput) {
+
+    const answerSlot = handlerInput.requestEnvelope.request.intent.slots.number.value;
+    var speechText = ""; 
+    if (correctAns == answerSlot) {
+      speechText += `${answerSlot} is the correct answer`;
+    } else {
+      speechText += `${answerSlot} is not correct, the correct answer is ${correctAns}`;
+    }
+
+    return handlerInput.responseBuilder
+      .speak(speechText)
+      .getResponse();
+  },
+};
+
 
 const HelpIntentHandler = {
   canHandle(handlerInput) {
@@ -39,12 +68,11 @@ const HelpIntentHandler = {
       && handlerInput.requestEnvelope.request.intent.name === 'AMAZON.HelpIntent';
   },
   handle(handlerInput) {
-    const speechText = 'You can say hello to me!';
+    const speechText = 'You can say start the game to begin the game';
 
     return handlerInput.responseBuilder
       .speak(speechText)
       .reprompt(speechText)
-      .withSimpleCard('Hello World', speechText)
       .getResponse();
   },
 };
@@ -95,7 +123,8 @@ const skillBuilder = Alexa.SkillBuilders.custom();
 exports.handler = skillBuilder
   .addRequestHandlers(
     LaunchRequestHandler,
-    HelloWorldIntentHandler,
+    BeginGameIntentHandler,
+    AnswerIntentHandler,
     HelpIntentHandler,
     CancelAndStopIntentHandler,
     SessionEndedRequestHandler
