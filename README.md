@@ -1,4 +1,4 @@
-<h2>Alexa skill Sequence game</h2>
+<h1>Alexa skill Sequence game</h1>
 
 This is simple sequence game with premade sequences. 
 
